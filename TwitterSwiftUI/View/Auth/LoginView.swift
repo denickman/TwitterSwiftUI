@@ -11,6 +11,7 @@ struct LoginView: View {
     
     @State var email = ""
     @State var password = ""
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
         NavigationView {
@@ -40,7 +41,6 @@ struct LoginView: View {
                     }
                     .padding(.horizontal, 32)
                     
-                    
                     HStack {
                         Spacer()
                         Button.init(action: {}, label: {
@@ -53,7 +53,9 @@ struct LoginView: View {
                         })
                     }
                     
-                    Button(action: {}, label: {
+                    Button(action: {
+                        viewModel.login(withEmail: email, password: password)
+                    }, label: {
                         Text("Sign In")
                             .font(.headline)
                             .foregroundColor(.blue)

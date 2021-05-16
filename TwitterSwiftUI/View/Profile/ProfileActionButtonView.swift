@@ -14,10 +14,11 @@ struct ProfileActionButtonView: View {
         static let currentUserProfileButtonHeight: CGFloat = 40.0
     }
     
-    let isCurrentUser: Bool
+    let viewModel: ProfileViewModel
+    @Binding var isFollowed: Bool
     
     var body: some View {
-        if isCurrentUser {
+        if viewModel.user.isCurrentUser {
             Button(action: {}, label: {
                 Text("Edit profile")
                     .frame(width: Constants.currentUserProfileButtonWidth, height: Constants.currentUserProfileButtonHeight)
@@ -27,8 +28,11 @@ struct ProfileActionButtonView: View {
             .cornerRadius(20.0)
         } else {
             HStack {
-                Button(action: {}, label: {
-                    Text("Follow")
+                Button(action: {
+                    print("DEBUG: Follow here...")
+                    isFollowed ? viewModel.unfollow() : viewModel.follow()
+                }, label: {
+                    Text(isFollowed ? "Following" : "Follow")
                         .frame(width: Constants.currentUserProfileButtonWidth/2, height: Constants.currentUserProfileButtonHeight)
                         .background(Color.blue)
                         .foregroundColor(.white)
@@ -44,11 +48,5 @@ struct ProfileActionButtonView: View {
                 .cornerRadius(20.0)
             }
         }
-    }
-}
-
-struct ProfileActionButtonView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileActionButtonView(isCurrentUser: false)
     }
 }

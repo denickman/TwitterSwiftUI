@@ -16,6 +16,8 @@ struct RegistrationView: View {
     @State var showImagePicker = false
     @State var selectedUIImage: UIImage?
     @State var image: Image?
+ 
+    @EnvironmentObject var viewModel: AuthViewModel
     
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     // this is a variable that keeps track of presentation state
@@ -35,7 +37,6 @@ struct RegistrationView: View {
                                 .cornerRadius(140.0/2) // clipshape circle too
                                 .padding(.top, 88)
                                 .padding(.bottom, 16)
-                                
                         } else {
                             Image("ic_add_photo")
                                 .resizable()
@@ -48,10 +49,10 @@ struct RegistrationView: View {
                         }
                     }
                 })
-                .sheet(isPresented: $showImagePicker, onDismiss: loadImage, content: {
+                .sheet(isPresented: $showImagePicker, onDismiss: loadImage) {
                     ImagePicker(image: $selectedUIImage)
-                })
-
+                }
+                
                 VStack(spacing: 20) {
                     CustomTextField(text: $email,
                                     placeholder: Text("Email"),
@@ -86,7 +87,14 @@ struct RegistrationView: View {
                 }
                 .padding(.horizontal, 32)
                 
-                Button(action: {}, label: {
+                Button(action: {
+                    selectedUIImage = UIImage(named: "ic_spiderman")
+                    viewModel.registerUser(email: email,
+                                           password: password,
+                                           username: userName,
+                                           fullname: fullName,
+                                           profileImage: selectedUIImage)
+                }, label: {
                     Text("Sign In")
                         .font(.headline)
                         .foregroundColor(.blue)

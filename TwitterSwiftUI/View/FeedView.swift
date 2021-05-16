@@ -10,6 +10,7 @@ import SwiftUI
 struct FeedView: View {
     
     @State var isShowingNewTweetView = false
+    @EnvironmentObject var viewModel: AuthViewModel
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -23,9 +24,10 @@ struct FeedView: View {
             }
             
             Button(action: {
+//                viewModel.signOut()
                 isShowingNewTweetView.toggle()
             }, label: {
-                //                Image(systemName: "pencil") // got from SF Symbols
+                //Image(systemName: "pencil") // got from SF Symbols
                 Image("ic_write")
                     .resizable()
                     .renderingMode(.template)
